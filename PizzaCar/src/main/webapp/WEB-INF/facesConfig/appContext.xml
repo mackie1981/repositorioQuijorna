@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+
+	<application>
+		<!-- Configuración de localización por defecto -->
+		<locale-config>
+			<default-locale>es</default-locale>
+			<supported-locale>es</supported-locale>
+		</locale-config>
+
+		<!-- Configuración de archivos de recursos -->
+		<resource-bundle>
+			<base-name>es.cenjorapps.pizzacar.messages</base-name>
+			<var>msg</var>
+		</resource-bundle>		
+	</application>
+
+	<!-- SECCION DEFINICION MANAGED BEANS -->
+	<managed-bean>
+		<managed-bean-name>sessionBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.SessionBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+    		<property-name>aperturaBean</property-name>
+    		<value>#{aperturaBean}</value>
+  		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>aperturaBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.AperturaBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>homeBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.HomeBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>cartaBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.CartaBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+		<managed-property>
+    		<property-name>sessionBean</property-name>
+    		<value>#{sessionBean}</value>
+  		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>loginBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.LoginBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+		<managed-property>
+    		<property-name>sessionBean</property-name>
+    		<value>#{sessionBean}</value>
+  		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>registroBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.RegistroBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>contactoBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.ContactoBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>recuperaPasswordBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.RecuperaPasswordBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>nuevoPasswordBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.NuevoPasswordBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>confirmacionBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.ConfirmarBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>miUsuarioBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.MiUsuarioBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+		<managed-property>
+    		<property-name>sessionBean</property-name>
+    		<value>#{sessionBean}</value>
+  		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>adminBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.AdminBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>usuarioAdminBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.AdminUserBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>categoriaAdminBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.AdminCategoriaBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>productoAdminBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.AdminProductoBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>pedidoAdminBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.AdminPedidoBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+		<managed-property>
+    		<property-name>sessionBean</property-name>
+    		<value>#{sessionBean}</value>
+  		</managed-property>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>employeeBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.EmployeeBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>excepcionBean</managed-bean-name>
+		<managed-bean-class>es.cenjorapps.pizzacar.web.beans.ExcepcionBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	
+	<!-- SECCION DEFINICION DE REGLAS DE NAVEGACION -->
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/xhtml/home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>manageUsers</from-outcome>
+			<to-view-id>/xhtml/usermgt/manageUsers.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>viewLogs</from-outcome>
+			<to-view-id>/xhtml/usermgt/viewLogs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

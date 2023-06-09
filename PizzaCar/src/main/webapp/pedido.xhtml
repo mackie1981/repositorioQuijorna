@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+    
+
+	<h:head>
+        <title>Pizza Car Express - Tu carro de la compra</title>
+        <link rel="stylesheet" type="text/css" href="css/nav.css"/>
+        <link rel="stylesheet" type="text/css" href="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="css/footer.css"/>
+        <link rel="stylesheet" type="text/css" href="css/home.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/nav.js"></script> 
+    </h:head>
+    <h:body>
+    	<div class="content">
+    		<nav class="navbar">
+				<div class="navbar-container">
+			    	<a href="home.xhtml" class="navbar-logo hover-nav" >
+			    		<img src="img/logo-nav.png" alt="Logo Pizza Car" style="width:3em;" class="hover-image" />
+			    	</a>
+			    	<ul class="navbar-menu">
+			      		<li><a href="home.xhtml">HOME</a></li>
+				    	<li><a href="carta.xhtml">CARTA</a></li>
+				    	<li><a href="contacto.xhtml">CONTACTO</a></li>
+				    	<li><a href="sobreMi.xhtml">SOBRE MI</a></li>
+				    	
+				    	<!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esAdmin()}">
+				    		<li><a href="admin/admin.xhtml">ADMIN</a></li>
+				    	</c:if>
+				    	
+				    	<!-- Solo mostramos si es EMPLEADO o ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esEmpleado()}">
+				    		<li><a href="employee/employee.xhtml">EMPLEADO</a></li>
+				    	</c:if>
+				    	
+				    	<!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esRegistrado()}">
+				    		<li><a href="user/usuario.xhtml">MI PERFIL</a></li>
+				    	</c:if>
+				    	
+				    	<li></li>
+				    	
+				    	<!-- Si es usuario INVITADO mostramos LOGIN -->
+				    	<c:if test="#{sessionBean.usuario.equals('Invitado')}">
+				    		<li class="login">
+					    		<a href="login.xhtml">
+		    						<i class="fa fa-thin fa-user"></i>
+					    		</a>
+					    	</li>
+				    	</c:if>
+				    	
+				    	<!-- Si es usuario ADMIN O REGISTRADO O EMPLEADO-->
+				    	<c:if test="#{not sessionBean.usuario.equals('Invitado')}">
+				    		<li class="login">
+		    					<h:form>	
+									<p:commandButton icon="fa fa-sign-out" title="Salir" onclick="PF('cierre').show()" 
+										styleClass="hov-exit" style="border-width:0;background:none;box-shadow:none;
+											   width:0.5em;text-shadow:none;"/>
+								</h:form>	
+					    	</li>
+				    	</c:if>
+				    	
+				    	<li class="carrito">
+				    		<i class="fa fa-shopping-cart li-seleccionado"></i>
+	    					<span class="carrito-count hover-doble li-seleccionado">#{sessionBean.contadorCarrito}</span>
+	    				</li>
+			    	</ul>
+			    	<div class="over-hidden">
+			    		<div class="float-left">
+				    		<a href="javascript:void(0);" class="icono sin hover-doble">
+						    	<i class="fa fa-shopping-cart marg-der-3p li-seleccionado"></i><span class="carrito-count hover-doble li-seleccionado">#{sessionBean.contadorCarrito}</span>
+							</a>
+					    </div>
+					    <div class="navbar-toggle float-right padre">
+					      	<div class="navbar-toggle-icon hijo" style="display: inline-block;"></div>
+					    </div>
+			    	</div>
+			  	</div>
+			  	<ul class="navbar-menu-mobile">
+			    	<li><a href="home.xhtml">Home</a></li>
+				    <li><a href="carta.xhtml">Carta</a></li>
+				    <li><a href="contacto.xhtml">Contacto</a></li>
+				    <li><a href="sobreMi.xhtml">Sobre mi</a></li>
+				    <!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    <c:if test="#{sessionBean.esAdmin()}">
+				   		<li><a href="admin/admin.xhtml">Sección admin</a></li>
+				   	</c:if>
+				   	<!-- Solo mostramos si es EMPLEADO o ADMIN el usuario de la sesion -->
+				    <c:if test="#{sessionBean.esEmpleado()}">
+				    	<li><a href="employee/employee.xhtml">Sección empleado</a></li>
+				    </c:if>
+				   	<!-- Solo mostramos si es usuario registrado -->
+				   	<c:if test="#{sessionBean.esRegistrado()}">
+			    		<li><a href="user/usuario.xhtml">Tu perfil</a></li>
+			    	</c:if>
+			    	<!-- Si es usuario INVITADO mostramos LOGIN -->
+				    <c:if test="#{sessionBean.usuario.equals('Invitado')}">
+					    <li><a href="login.xhtml">Accede a tu cuenta</a></li>
+				    </c:if>
+				    <!-- Si es usuario ADMIN O REGISTRADO -->
+				    <c:if test="#{not sessionBean.usuario.equals('Invitado')}">
+		    			<h:form>
+		    				<p:remoteCommand name="si" action="#{sessionBean.salir(true)}"/>
+				    		<p:remoteCommand name="no" action="#{sessionBean.salir(false)}"/>
+							<p:commandButton title="Cerrar sesión" value="Cerrar sesión" onclick="PF('cierre').show()" style="background:none;" styleClass="hover-button"/>
+						  	<p:confirmDialog styleClass="cierre" appendTo="@(body)" header="Confirmación de cierre" message="¿Estás seguro que deseas cerrar tu sesión?" severity="alert" widgetVar="cierre">
+						     	<p:commandButton value="Si" onclick="PF('cierre').hide(); si()" />
+						     	<p:commandButton value="No" onclick="PF('cierre').hide(); no()" />
+						  	</p:confirmDialog>
+						</h:form>	    	
+				    </c:if>
+			  	</ul>
+			</nav>
+			<br />
+			<div class="container-all">
+				<div class="container">
+		    	<h:form class="form" id="form">
+		    		<div class="container-admin items-center">
+		    			<h3 class="centrado bg-prim color-fff width-full">CARRO DE LA COMPRA</h3>
+		    			<div class="centrado">
+			    			<div class="custom-growl">
+								<p:growl id="messages" showDetail="true" sticky="false" autoUpdate="true" life="800"/>
+							</div>
+							
+							<c:if test="#{sessionBean.contadorCarrito lt 1}">
+								<p><p:outputLabel value="El carro de la compra esta vacío" /></p>
+								<p><p:outputLabel value="Añade los productos que deseas" /></p>
+								<p><p:outputLabel value="Estamos encantados de servirle" /></p>
+							</c:if>
+							<c:if test="#{sessionBean.contadorCarrito ge 1}">
+								<p:panelGrid columns="6" styleClass="width-full">
+							        <p:outputLabel style="width: 12em; display:block" value="Producto" />
+							        <p:outputLabel style="width: 1.5em; display:block" value="Uds" />
+							        <p:outputLabel style="width: 2.5em; display:block" value="Precio" />
+							        <p:outputLabel style="width: 3.5em; display:block" value="Total" />
+							        <p:outputLabel style="width: 2em; display:block" value="" />
+							        <p:outputLabel style="width: 2em; display:block" value="" />
+								</p:panelGrid>
+					    		<c:forEach items="#{sessionBean.pedidoCliente.detalles}" var="detalle">
+					    			<p:panelGrid columns="6" styleClass="">
+								        <p:outputLabel style="width: 12em; display:block; text-align: left;" value="#{detalle.producto.nombre}" />
+								        <p:outputLabel style="width: 1.5em; display:block" value="#{detalle.cantidad}" />
+								        <p:outputLabel style="width: 2.5em; display:block" value="#{detalle.producto.precio}" />
+								        <p:outputLabel style="width: 3.5em; display:block" value="#{detalle.producto.precio * detalle.cantidad}" />
+								        <p:outputLabel style="width: 2em; display:block">
+								        	<p:commandButton styleClass="bg-negro color-fff" icon="fa fa-plus" action="#{sessionBean.sumar(detalle.producto)}" update="@all" />
+										</p:outputLabel>
+								        <p:outputLabel style="width: 2em; display:block">
+								        	<p:commandButton styleClass="bg-negro color-fff" icon="fa fa-minus" action="#{sessionBean.restar(detalle.producto)}" update="@all" />
+										</p:outputLabel>
+								     
+								    </p:panelGrid>
+					    		</c:forEach>
+					    		<br />
+					    		<p:panelGrid columns="2" styleClass="width-full">
+							        <p:outputLabel style="width: 18em; display:block; float:right;" value="Total pedido" />
+							        <p:outputLabel style="width: 2em; display:block" value="#{sessionBean.pedidoCliente.total}€" />
+								</p:panelGrid>
+								<p:panelGrid columns="2" styleClass="width-full">
+									<p:inputTextarea style="width: 100%; display:block;" rows="4" value="#{sessionBean.pedidoCliente.observaciones}" placeholder="Observaciones"/>
+								</p:panelGrid>
+								<br />
+					    		<br />
+					    		<p:panelGrid columns="2" styleClass="width-full">
+				    				<p:outputLabel style="width: 29em; display:block" rendered="#{not sessionBean.aperturaBean.localAbierto}" value="Aun no hemos abierto cocina, inténtalo más tarde" />
+				    			</p:panelGrid>
+					    		<p:panelGrid columns="2" styleClass="width-full">
+				    				<p:commandButton styleClass="b_negro_admin" disabled="#{not sessionBean.aperturaBean.localAbierto}" value="Pedir" icon="fa fa-paper-plane" action="#{sessionBean.pedir}" update="@all"/>
+				    			</p:panelGrid>
+				    			
+				    			<br />
+								<p:panelGrid columns="2" styleClass="width-full">
+									<p:outputLabel value="* Solo se admite pago contrarembolso" />
+								</p:panelGrid>
+								<p:panelGrid columns="2" styleClass="width-full">
+									<p:outputLabel value="* El pedido mínimo es de 15€" />
+								</p:panelGrid>
+								<p:panelGrid columns="2" styleClass="width-full">
+									<p:outputLabel value="* Envío gratuito" />
+				    			</p:panelGrid>
+				    			<br />
+							</c:if>
+			    		</div>
+		    		</div>
+		    	</h:form>
+			</div>
+			</div>
+    	</div>
+		<br/>
+		<footer class="footer margin-top-doble">
+			<h:panelGroup layout="block">
+		    	<div class="row">
+		      		<div>
+		        		<h4 class="centrado no-margin-bottom padding-top-3">Pizza Car Express - El Cardenal</h4>
+		        		<p class="centrado no-margin-bottom">Calle Ciprés, 6</p>
+		        		<p class="centrado no-margin-bottom">45700 Consuegra</p>
+		        		<p class="centrado no-margin-bottom">Toledo</p>
+		        		<p class="centrado no-margin-bottom">925 47 55 62</p>
+		        		<p class="centrado no-margin-bottom">pizzacarexpress@gmail.com</p>
+		      		</div>
+		    	</div>
+		    	<hr/>
+		    	<div class="row">
+		      		<div>
+		        		<p class="centrado no-margin-bottom">&#169; 2023 PizzaCar Express. Todos los derechos reservados.</p>
+		        		<p class="centrado separado-arriba no-margin-bottom">Síguenos en 
+		        			<a href="https://www.facebook.com/Pizza-Car-Consuegra" target="_blank"><i class="fa fa-facebook footer" aria-hidden="true"></i></a>
+		        			<a href="https://www.instagram.com/pizza_car_consuegra" target="_blank"><i class="fa fa-instagram footer" aria-hidden="true"></i></a>
+		         		</p>
+		         		<p class="centrado separado-arriba no-margin-bottom">Developed by Álvaro Quijorna (CenjorApps)</p>
+		      			<br></br>
+		      		</div>
+		    	</div>
+		  	</h:panelGroup>
+		</footer>
+    </h:body>    
+</html>

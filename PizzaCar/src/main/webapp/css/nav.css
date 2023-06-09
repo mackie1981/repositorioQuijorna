@@ -1,0 +1,274 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.navbar {
+	background-color: #1f242d !important;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	display: block !important;
+	top: 0;
+	width: 100%;
+}
+
+.navbar-container {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	max-width: 95%;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+.navbar-logo {
+	color: #f2f2f2;
+	font-size: 2em;
+	font-weight: bold;
+	text-decoration: none;
+	transition: color 0.5s ease-in-out;
+}
+
+.navbar-logo:hover {
+	color: #bc6363;
+}
+
+.navbar-menu {
+	align-items: end;
+	display: flex;
+	list-style: none;
+	align-self: last baseline;
+}
+
+.navbar-menu li {
+	margin-right: 20px;
+}
+
+.navbar-menu li a {
+	color: #f2f2f2;
+	text-decoration: none;
+	transition: color 0.5s ease-in-out;
+}
+
+.navbar-menu li a:hover {
+	color: #bc6363;
+}
+
+.navbar-toggle {
+	cursor: pointer;
+	position: relative;
+	width: 30px;
+	height: 40px;
+	font-size: 28px;
+}
+
+.navbar-toggle-icon, .navbar-toggle-icon:before, .navbar-toggle-icon:after {
+	background-color: #f2f2f2;
+	content: "";
+	display: block;
+	height: 3px;
+	position: relative;
+	width: 100%;
+	
+}
+
+.navbar-toggle-icon:before {
+	top: -7px;
+}
+
+.navbar-toggle-icon:after {
+	bottom: -4px;
+}
+
+.navbar-menu-mobile {
+	display: none;
+	list-style: none;
+	position: unset;
+	top: 60px;
+	left: 0;
+	width: 100%;
+	padding: 10px;
+	background-color: #1f242d;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	height: 0;
+	overflow: hidden;
+	font-size: 1.6em
+}
+
+.navbar-menu-mobile-altura {
+	height: auto;
+}
+
+.navbar-menu-mobile li {
+	margin-bottom: 10px;
+}
+
+.navbar-menu-mobile li a {
+	color: #fff;
+	text-decoration: none;
+	transition: color 0.5s ease-in-out;
+}
+
+.carrito {
+	transition: color 0.5s ease-in-out;
+}
+
+.carrito a {
+	position: relative;
+}
+
+.carrito i {
+	font-size: 1.5rem;
+}
+
+.carrito .carrito-count {
+	position: absolute;
+}
+
+.carrito li a {
+	color: #f2f2f2;
+}
+.hov-exit {
+	color:#fff;
+	transition: color 0.5s ease-in-out;
+}
+
+.hov-exit:hover {
+	color: #bc6363;
+}
+
+.hover-button {
+	color:#fff;
+	transition: color 0.5s ease-in-out;
+}
+
+.hover-button:hover {
+	color: #bc6363;
+}
+
+.hover-nav img {
+	background-color: #fff;
+	transition: background-color 0.5s ease-in-out;
+}
+
+.hover-nav img:hover {
+	background-color: #bc6363;
+}
+
+.hover-doble {
+	transition: color 0.5s ease-in-out;
+}
+
+.hover-doble:hover {
+	color: #bc6363;
+}
+
+.hijo, .hijo::before, .hijo::after {
+	transition: background-color 0.5s ease-in-out;
+}
+
+.padre:hover .hijo {
+	background-color: #bc6363;
+}
+
+.padre:hover .hijo::before {
+	background-color: #bc6363;
+}
+
+.padre:hover .hijo::after {
+	background-color: #bc6363;
+}
+
+.login a {
+	display: block;
+	position: relative;
+}
+
+.login i {
+	font-size: 1.5rem;
+	color: #fff;
+}
+
+.login a i:hover {
+	color: #bc6363 !important;
+	transition: color 0.5s ease-in-out;
+}
+
+.login .fa-sign-out {
+	top: 40%;
+	width: auto;
+	height: auto;
+	margin-top: -3px !important;
+}
+
+.sin {
+	text-decoration: none;
+	cursor: default; 
+}
+
+.icono {
+	color: #fff;
+	display: inline-block;
+	margin-left: auto;
+	padding-right: 8px;
+	font-size: 1.4em;
+}
+
+.padding-right {
+	padding-right: 5px;
+}
+
+.marg-der-3p {
+	margin-right: 3px;
+}
+
+
+.navbar-menu-mobile li a:hover {
+	color: #bc6363;
+}
+
+.over-hidden {
+	overflow: hidden;
+}
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+@media (max-width : 768px) {
+	.navbar-menu {
+		display: none;
+	}
+	.navbar-logo {
+  		font-size: 2.5em;
+  	}
+	.icono {
+		font-size: 2.5em;
+		display: inline-block;
+	}
+	
+}
+
+@media (max-width : 1050px) {
+	.navbar-menu {
+		display: none;
+	}
+	.navbar-logo {
+  		font-size: 3em;
+  	}
+	.icono {
+		font-size: 2em;
+		display: inline-block;
+	}
+}
+
+@media (min-width : 1051px) {
+	.navbar-toggle {
+		display: none;
+	}
+	.icono {
+		display: none;
+	}
+}

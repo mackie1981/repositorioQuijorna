@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/pizzacar" docBase="pizzacar"
+   crossContext="true" reloadable="true" debug="1">
+    
+    <!-- Este recurso no es válido para MariaDB
+         hay que pasarselo creando un bean      -->
+    <Resource name="jdbc/pizzacar" 
+    	driverClassName="org.mariadb.jdbc.Driver"
+        url="jdbc:mariadb://localhost:3306/pizzacar"
+    	auth="Container"
+        type="javax.sql.DataSource" 
+        username="root" 
+        password="12345678"/>     
+      
+</Context>

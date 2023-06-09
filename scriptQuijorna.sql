@@ -1,0 +1,111 @@
+
+/* NOTA ACLARATORIA: LA APLICACION PIZZACAR UTILIZA UN USUARIO: root Y PASSWORD: 12345678*/
+
+/* CREAMOS LA BASE DE DATOS*/
+CREATE SCHEMA pizzacar;
+
+/* CREAMOS TABLA CATEGORIA */
+CREATE TABLE categoria (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	descripcion TEXT NULL DEFAULT NULL,
+	PRIMARY KEY (id)
+);
+
+/* CREAMOS TABLA ROL */
+CREATE TABLE `rol` (
+	id TINYINT(20) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+/* INSERTAMOS LOS ROLES DE LA APLICACION */
+INSERT INTO rol (nombre) VALUES
+	('ROLE_ADMIN'),
+	('ROLE_REGIS'),
+	('ROLE_INVITADO'),
+	('ROLE_EMPLEADO');
+
+/* CREAMOS TABLA ESTADO */
+CREATE TABLE estado (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+/* INSERTAMOS LOS ESTADOS QUE TIENE UN PEDIDO */
+INSERT INTO estado (nombre) VALUES
+	('REGISTRADO'),
+	('EN PREPARACION'),
+	('TERMINADO');
+
+/* CREAMOS LA TABLA USUARIO */
+CREATE TABLE `usuario` (
+	id BIGINT(20) NOT NULL AUTO_INCREMENT,
+	username VARCHAR(50) NOT NULL,
+	pass VARCHAR(200) NOT NULL,
+	email VARCHAR(200) NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	apellido1 VARCHAR(60) NOT NULL,
+	apellido2 VARCHAR(60) NULL DEFAULT NULL,
+	direccion VARCHAR(200) NOT NULL,
+	poblacion VARCHAR(50) NOT NULL,
+	cod_postal VARCHAR(5) NOT NULL,
+	provincia VARCHAR(40) NOT NULL,
+	telefono VARCHAR(9) NOT NULL,
+	rol TINYINT(20) NOT NULL,
+	confirmado TINYINT(4) NOT NULL DEFAULT '0',
+	token_confimacion VARCHAR(36) NOT NULL,
+	PRIMARY KEY (id) USING BTREE,
+	UNIQUE INDEX username (username) USING BTREE,
+	UNIQUE INDEX email (email) USING BTREE,
+	INDEX rol (rol) USING BTREE,
+	CONSTRAINT usuario_ibfk_1 FOREIGN KEY (rol) REFERENCES rol (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+/* INSERTAMOS EL USUARIO ADMIN INICIAL */
+INSERT INTO usuario (username, pass, email, nombre, apellido1, apellido2, direccion, poblacion, cod_postal, provincia, telefono, rol, confirmado, token_confimacion) VALUES
+	('admin1234', '$2a$10$G0IpnvMbXH5IeHXpqbBr6.mBFyDuqXTl5fRsYMWLIVSrMqzfptlKO', 'djalvarocenjor@gmail.com', 'ADMIN', 'ADMIN 1', 'ADMIN 2', 'Las Lomas, 12', 'Consuegra', '45700', 'Toledo', '925000000', 1, 1, '941766bf-11c9-4fcb-8033-6abe199c5e81');
+
+/* CREACION TABLA PEDIDO */
+CREATE TABLE pedido (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	usuario BIGINT(20) NOT NULL,
+	estado INT(11) NOT NULL,
+	fecha_pedido DATE NOT NULL,
+	hora_pedido TIME NOT NULL,
+	total DECIMAL(10,2) NOT NULL,
+	observaciones TEXT NULL DEFAULT NULL,
+	PRIMARY KEY (id),
+	INDEX usuario (usuario),
+	INDEX estado (estado),
+	CONSTRAINT pedido_ibfk_1 FOREIGN KEY (usuario) REFERENCES usuario (id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT pedido_ibfk_2 FOREIGN KEY (estado) REFERENCES estado (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+/* CREACION TABLA PRODUCTO */
+CREATE TABLE producto (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(100) NOT NULL,
+	descripcion TEXT NULL DEFAULT NULL,
+	precio DECIMAL(10,2) NOT NULL,
+	imagen VARCHAR(100) NULL DEFAULT NULL,
+	categoria INT(11) NOT NULL,
+	destacado INT(1) NOT NULL DEFAULT '0',
+	PRIMARY KEY (id),
+	INDEX categoria (categoria),
+	CONSTRAINT producto_ibfk_1 FOREIGN KEY (categoria) REFERENCES categoria (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+/* CREACION TABLA DETALLE_PEDIDO */
+CREATE TABLE detalle_pedido (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	pedido INT(11) NOT NULL,
+	producto INT(11) NOT NULL,
+	cantidad INT(11) NOT NULL,
+	PRIMARY KEY (id),
+	INDEX pedido (pedido),
+	INDEX producto (producto),
+	CONSTRAINT detalle_pedido_ibfk_1 FOREIGN KEY (pedido) REFERENCES pedido (id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT detalle_pedido_ibfk_2 FOREIGN KEY (producto) REFERENCES producto (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);

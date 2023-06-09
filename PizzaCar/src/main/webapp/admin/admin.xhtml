@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+    
+
+	<h:head>
+        <title>Pizza Car Express - Administración Webapp</title>
+        <link rel="stylesheet" type="text/css" href="../css/nav.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/footer.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />	
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/nav.js"></script>
+    </h:head>
+    <h:body>
+    	<div class="content">
+    		
+    		<nav class="navbar">
+				<div class="navbar-container">
+			    	<a href="../home.xhtml" class="navbar-logo hover-nav" >
+			    		<img src="../img/logo-nav.png" alt="Logo Pizza Car" style="width:3em;" class="hover-image" />
+			    	</a>
+			    	<ul class="navbar-menu">
+			      		<li><a href="../home.xhtml">HOME</a></li>
+				    	<li><a href="../carta.xhtml">CARTA</a></li>
+				    	<li><a href="../contacto.xhtml">CONTACTO</a></li>
+				    	<li><a href="../sobreMi.xhtml">SOBRE MI</a></li>
+				    	
+				    	<!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esAdmin()}">
+				    		<li class="li-seleccionado">ADMIN</li>
+				    	</c:if>
+				    	
+				    	<!-- Solo mostramos si es EMPLEADO o ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esEmpleado()}">
+				    		<li><a href="../employee/employee.xhtml">EMPLEADO</a></li>
+				    	</c:if>
+				    	
+				    	<!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esRegistrado()}">
+				    		<li class="li-seleccionado">MI PERFIL</li>
+				    	</c:if>
+				    	
+				    	<li></li>
+				    	
+				    	<!-- Si es usuario INVITADO mostramos LOGIN -->
+				    	<c:if test="#{sessionBean.usuario.equals('Invitado')}">
+				    		<li class="login">
+					    		<a href="../login.xhtml">
+		    						<i class="fa fa-thin fa-user"></i>
+					    		</a>
+					    	</li>
+				    	</c:if>
+				    	
+				    	<!-- Si es usuario ADMIN O REGISTRADO O EMPLEADO-->
+				    	<c:if test="#{not sessionBean.usuario.equals('Invitado')}">
+				    		<li class="login">
+		    					<h:form>	
+									<p:commandButton icon="fa fa-sign-out" title="Salir" onclick="PF('cierre').show()" 
+										styleClass="hov-exit" style="border-width:0;background:none;box-shadow:none;
+											   width:0.5em;text-shadow:none;"/>
+								</h:form>	
+					    	</li>
+				    	</c:if>
+				    	
+				    	<li class="carrito">
+				    		<a class="" href="../pedido.xhtml">
+				    			<i class="fa fa-shopping-cart"></i>
+	    						<span class="carrito-count hover-doble">#{sessionBean.contadorCarrito}</span>
+	    					</a>
+	    				</li>
+			    	</ul>
+			    	<div class="over-hidden">
+			    		<div class="float-left">
+				    		<a href="../pedido.xhtml" class="icono sin hover-doble">
+						    	<i class="fa fa-shopping-cart marg-der-3p"></i><span class="carrito-count hover-doble">#{sessionBean.contadorCarrito}</span>
+							</a>
+					    </div>
+					    <div class="navbar-toggle float-right padre">
+					      	<div class="navbar-toggle-icon hijo" style="display: inline-block;"></div>
+					    </div>
+			    	</div>
+			    	
+			  	</div>
+			  	<ul class="navbar-menu-mobile">
+			    	<li><a href="../home.xhtml">Home</a></li>
+				    <li><a href="../carta.xhtml">Carta</a></li>
+				    <li><a href="../contacto.xhtml">Contacto</a></li>
+				    <li><a href="../sobreMi.xhtml">Sobre mi</a></li>
+				    <!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    <c:if test="#{sessionBean.esAdmin()}">
+				   		<li class="li-seleccionado">Sección admin</li>
+				   	</c:if>
+				   	<!-- Solo mostramos si es EMPLEADO o ADMIN el usuario de la sesion -->
+				    <c:if test="#{sessionBean.esEmpleado()}">
+				    	<li><a href="../employee/employee.xhtml">Sección empleado</a></li>
+				    </c:if>
+				   	<!-- Solo mostramos si es usuario registrado -->
+				   	<c:if test="#{sessionBean.esRegistrado()}">
+			    		<li class="li-seleccionado">Tu perfil</li>
+			    	</c:if>
+			    	<!-- Si es usuario INVITADO mostramos LOGIN -->
+				    <c:if test="#{sessionBean.usuario.equals('Invitado')}">
+					    <li><a href="../login.xhtml">Accede a tu cuenta</a></li>
+				    </c:if>
+				    <!-- Si es usuario ADMIN O REGISTRADO -->
+				    <c:if test="#{not sessionBean.usuario.equals('Invitado')}">
+		    			<h:form>
+		    				<p:remoteCommand name="si" action="#{sessionBean.salir(true)}"/>
+				    		<p:remoteCommand name="no" action="#{sessionBean.salir(false)}"/>
+							<p:commandButton title="Cerrar sesión" value="Cerrar sesión" onclick="PF('cierre').show()" style="background:none;" styleClass="hover-button"/>
+						  	<p:confirmDialog styleClass="cierre" appendTo="@(body)" header="Confirmación de cierre" message="¿Estás seguro que deseas cerrar tu sesión?" severity="alert" widgetVar="cierre">
+						     	<p:commandButton value="Si" onclick="PF('cierre').hide(); si()" />
+						     	<p:commandButton value="No" onclick="PF('cierre').hide(); no()" />
+						  	</p:confirmDialog>
+						</h:form>	    	
+				    </c:if>
+			  	</ul>
+			</nav>
+    		<br></br>
+    		<div class="container-all">
+    			<div class="container">
+			    	<h:form class="form" id="form">
+			    		<div class="article">
+			    			<h3 class="centrado">MENÚ ADMINISTRACIÓN</h3>
+							<br></br>
+							<div class="cajaGris bordeNegro">
+								<h:selectOneMenu value="#{adminBean.seccionSeleccionada}" class="b_negro">
+									<f:selectItems value="#{adminBean.listaSecciones}"
+										var="activo" itemValue="#{activo.value}"
+										itemLabel="#{activo.label}" />
+								</h:selectOneMenu>
+								<div>
+									<p:commandButton styleClass="b_azul no-sombra-azul" icon="fa fa-search" value="Buscar" actionListener="#{adminBean.buscarSecciones}" ajax="true" title="Buscar" update=":form"/>
+								</div>
+								<div>
+									<p:commandButton icon="fa fa-shopping-cart" rendered="#{!sessionBean.aperturaBean.localAbierto}" styleClass="b_verde no-sombra-verde " value="Activar Pedidos" action="#{sessionBean.abrirPedidos}" title="Activar Pedidos" update=":form"/>
+									<p:commandButton icon="fa fa-times" rendered="#{sessionBean.aperturaBean.localAbierto}" styleClass="b_rojo_admin no-sombra-rojo " value="Cerrar Pedidos" action="#{sessionBean.cerrarPedidos}" title="Cerrar Pedidos" update=":form"/>
+								</div>
+							</div>
+						</div>
+						<br></br>
+						<div class="article">
+							<c:if test="#{adminBean.seccionSeleccionada eq 1}">
+								<h4 class="centrado margin-bottom">Administración de usuarios</h4>
+								<div class="centrado">
+									<p:commandButton styleClass="b_verde no-sombra-verde" icon="fa fa-user" value="Nuevo" action="#{adminBean.nuevoUsuario}" ajax="false" title="Nuevo usuario"/>
+								</div>
+								<br></br>
+								<div class="cajaGris bordeNegro">
+									<c:if test="#{adminBean.listaUsuarios.size() > 0}">
+										<br></br>
+										<p:dataTable widgetVar="tabla-res" id="tablaResultados" 
+												var="usuario" value="#{adminBean.listaUsuarios}" 
+												paginator="true" rows="30" editable="true" responsive="true" styleClass="letra-adaptada">		            			
+												
+											<p:column headerText="Usuario" sortBy="#{usuario.username}">
+												<h:outputText value="#{usuario.username}" />
+											</p:column>
+											<p:column headerText="Email" sortBy="#{usuario.email}" style="width:auto;">
+												<h:outputText value="#{usuario.email}" />
+											</p:column>
+											<p:column>
+												<p:commandButton icon="fa fa-eye" action="#{adminBean.ver(1)}" ajax="true" title="Visualizar" styleClass="b_verde_admin" >
+													<f:setPropertyActionListener target="#{adminBean.usuarioSeleccionado}" value="#{usuario}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-pencil-square-o" action="#{adminBean.editar(1)}" ajax="true" title="Editar" styleClass="b_amarillo" >
+													<f:setPropertyActionListener target="#{adminBean.usuarioSeleccionado}" value="#{usuario}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-trash-o" action="#{adminBean.eliminar(1)}" ajax="true" title="Eliminar" styleClass="b_rojo">
+													<f:setPropertyActionListener target="#{adminBean.usuarioSeleccionado}" value="#{usuario}" />
+												</p:commandButton>	
+											</p:column>
+										</p:dataTable>
+									</c:if>
+									<c:if test="#{empty adminBean.listaUsuarios}">
+										<br></br>
+										<h4 class="centrado">No hay usuarios en la base de datos</h4>
+									</c:if>
+								</div>
+							</c:if>
+								
+							<c:if test="#{adminBean.seccionSeleccionada eq 2}">
+								<h4 class="centrado margin-bottom">Administración de productos</h4>
+								<div class="centrado">
+									<p:commandButton styleClass="b_verde no-sombra-verde" icon="fa fa-product-hunt" value="Nuevo" action="#{adminBean.nuevoProducto}" />
+								</div>
+								<br></br>						
+								<div class="cajaGris bordeNegro">
+									<c:if test="#{adminBean.listaProductos.size() > 0}">
+										<br></br>
+										<p:dataTable widgetVar="tabla-res" id="tablaResultados" 
+												var="producto" value="#{adminBean.listaProductos}" styleClass="letra-adaptada"
+												paginator="true" rows="30" editable="true" responsive="true" >		            			
+																		
+											<p:column headerText="Nombre" sortBy="#{producto.nombre}">
+												<h:outputText value="#{producto.nombre}" />
+											</p:column>
+											<p:column headerText="PVP" sortBy="#{producto.precio}">
+												<h:outputText value="#{producto.precio}" />
+											</p:column>
+											<p:column headerText="Categoria" sortBy="#{producto.categoria.nombre}">
+												<h:outputText value="#{producto.categoria.nombre}" />
+											</p:column>
+											<p:column>
+												<p:commandButton icon="fa fa-eye" action="#{adminBean.ver(2)}" ajax="true" title="Visualizar" styleClass="b_verde_admin" >
+													<f:setPropertyActionListener target="#{adminBean.productoSeleccionado}" value="#{producto}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-pencil-square-o" action="#{adminBean.editar(2)}" ajax="true" title="Editar" styleClass="b_amarillo" >
+													<f:setPropertyActionListener target="#{adminBean.productoSeleccionado}" value="#{producto}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-trash-o" action="#{adminBean.eliminar(2)}" ajax="true" title="Eliminar" styleClass="b_rojo">
+													<f:setPropertyActionListener target="#{adminBean.productoSeleccionado}" value="#{producto}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</c:if>
+									<c:if test="#{empty adminBean.listaProductos}">
+										<br></br>
+										<h4 class="centrado">No hay productos en la base de datos</h4>
+									</c:if>
+								</div>
+							</c:if>
+								
+							<c:if test="#{adminBean.seccionSeleccionada eq 3}">
+								<h4 class="centrado margin-bottom">Administración de pedidos</h4>
+								<div class="centrado">
+									<p:commandButton class="b_verde no-sombra-verde" icon="fa fa-cart-plus" value="Nuevo" action="#{adminBean.nuevoPedido}" />
+								</div>
+								<br></br>							
+								<div class="cajaGris bordeNegro">
+									<c:if test="#{adminBean.listaPedidos.size() > 0}">
+										<br></br>
+										<p:dataTable widgetVar="tabla-res" id="tablaResultados" 
+												var="pedido" value="#{adminBean.listaPedidos}" 
+												paginator="true" rows="30" editable="true" responsive="true" >		            			
+												
+											<p:column headerText="Usuario" sortBy="#{pedido.usuario.username}">
+												<h:outputText value="#{pedido.usuario.username}" />
+											</p:column>
+											<p:column headerText="Estado" sortBy="#{pedido.estado.nombre}">
+												<h:outputText value="#{pedido.estado.nombre}" />
+											</p:column>
+											<p:column headerText="Fecha" sortBy="#{pedido.fechaPedido}">
+												<h:outputText value="#{pedido.fechaPedido}" />
+											</p:column>
+											<p:column headerText="Hora" sortBy="#{pedido.horaPedido}">
+												<h:outputText value="#{pedido.horaPedido}" />
+											</p:column>
+											<p:column headerText="Total" sortBy="#{pedido.total}">
+												<h:outputText value="#{pedido.total}" />
+											</p:column>
+											
+											<p:column>
+												<p:commandButton icon="fa fa-eye" action="#{adminBean.ver(3)}" ajax="true" title="Visualizar" styleClass="b_verde_admin" >
+													<f:setPropertyActionListener target="#{adminBean.pedidoSeleccionado}" value="#{pedido}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-pencil-square-o" action="#{adminBean.editar(3)}" ajax="true" title="Editar" styleClass="b_amarillo" >
+													<f:setPropertyActionListener target="#{adminBean.pedidoSeleccionado}" value="#{pedido}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-trash-o" action="#{adminBean.eliminar(3)}" ajax="true" title="Eliminar" styleClass="b_rojo">
+													<f:setPropertyActionListener target="#{adminBean.pedidoSeleccionado}" value="#{pedido}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</c:if>
+									<c:if test="#{empty adminBean.listaPedidos}">
+										<h4 class="centrado">No hay pedidos en la base de datos</h4>
+									</c:if>
+								</div>
+							</c:if>
+							
+							<c:if test="#{adminBean.seccionSeleccionada eq 4}">
+								<h4 class="centrado margin-bottom">Administración de categorías</h4>
+								<div class="centrado">
+									<p:commandButton styleClass="b_verde no-sombra-verde" icon="fa fa-folder" value="Nueva" action="#{adminBean.nuevaCategoria}" ajax="false" title="Nueva categoria"/>
+								</div>
+								<br></br>							
+								<div class="cajaGris bordeNegro">
+									<c:if test="#{adminBean.listaCategorias.size() > 0}">
+										<br></br>
+										<p:dataTable widgetVar="tabla-res" id="tablaResultados" styleClass="letra-adaptada"
+												var="categoria" value="#{adminBean.listaCategorias}" 
+												paginator="true" rows="30" editable="true" responsive="true" >
+																		
+											<p:column headerText="Nombre" sortBy="#{categoria.nombre}">
+												<h:outputText value="#{categoria.nombre}" />
+											</p:column>
+											<p:column headerText="Descripción" sortBy="#{categoria.descripcion}">
+												<h:outputText value="#{categoria.descripcion}" />
+											</p:column>
+											<p:column>
+												<p:commandButton icon="fa fa-eye" action="#{adminBean.ver(4)}" ajax="true" title="Visualizar" styleClass="b_verde_admin" >
+													<f:setPropertyActionListener target="#{adminBean.categoriaSeleccionado}" value="#{categoria}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-pencil-square-o" action="#{adminBean.editar(4)}" ajax="true" title="Editar" styleClass="b_amarillo" >
+													<f:setPropertyActionListener target="#{adminBean.categoriaSeleccionado}" value="#{categoria}" />
+												</p:commandButton>
+												<p:commandButton icon="fa fa-trash-o" action="#{adminBean.eliminar(4)}" ajax="true" title="Eliminar" styleClass="b_rojo" >
+													<f:setPropertyActionListener target="#{adminBean.categoriaSeleccionado}" value="#{categoria}" />
+												</p:commandButton>		
+											</p:column>
+										</p:dataTable>
+									</c:if>
+									<c:if test="#{empty adminBean.listaCategorias}">
+										<br></br>
+										<h4 class="centrado">No hay categorias en la base de datos</h4>
+									</c:if>
+								</div>
+							</c:if>
+						</div>
+			    	</h:form>
+				</div>
+    		</div>
+    	</div>
+		<footer class="footer margin-top-doble">
+			<h:panelGroup layout="block">
+		    	<div class="row">
+		      		<div>
+		        		<h4 class="centrado no-margin-bottom padding-top-3">Pizza Car Express - El Cardenal</h4>
+		        		<p class="centrado no-margin-bottom">Calle Ciprés, 6</p>
+		        		<p class="centrado no-margin-bottom">45700 Consuegra</p>
+		        		<p class="centrado no-margin-bottom">Toledo</p>
+		        		<p class="centrado no-margin-bottom">925 47 55 62</p>
+		        		<p class="centrado no-margin-bottom">pizzacarexpress@gmail.com</p>
+		      		</div>
+		    	</div>
+		    	<hr/>
+		    	<div class="row">
+		      		<div>
+		        		<p class="centrado no-margin-bottom">&#169; 2023 PizzaCar Express. Todos los derechos reservados.</p>
+		        		<p class="centrado separado-arriba no-margin-bottom">Síguenos en 
+		        			<a href="https://www.facebook.com/Pizza-Car-Consuegra" target="_blank"><i class="fa fa-facebook footer" aria-hidden="true"></i></a>
+		        			<a href="https://www.instagram.com/pizza_car_consuegra" target="_blank"><i class="fa fa-instagram footer" aria-hidden="true"></i></a>
+		         		</p>
+		         		<p class="centrado separado-arriba no-margin-bottom">Developed by Álvaro Quijorna (CenjorApps)</p>
+		      			<br></br>
+		      		</div>
+		    	</div>
+		  	</h:panelGroup>
+		</footer>
+    </h:body>    
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+    
+
+	<h:head>
+        <title>Pizza Car Express - Acerca de mí</title>
+        <link rel="stylesheet" type="text/css" href="css/nav.css"/>
+        <link rel="stylesheet" type="text/css" href="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="css/footer.css"/>
+        <link rel="stylesheet" type="text/css" href="css/sobreMi.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />	
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/nav.js"></script>
+        <script type="text/javascript" src="js/sobreMi.js"></script>
+    </h:head>
+    <h:body onload="escribirTexto(); escribirEnlace();" >
+    	<div class="content">
+    		<nav class="navbar">
+				<div class="navbar-container">
+			    	<a href="home.xhtml" class="navbar-logo hover-nav" >
+			    		<img src="img/logo-nav.png" alt="Logo Pizza Car" style="width:3em;" class="hover-image" />
+			    	</a>
+			    	<ul class="navbar-menu">
+			      		<li><a href="home.xhtml">HOME</a></li>
+				    	<li><a href="carta.xhtml">CARTA</a></li>
+				    	<li><a href="contacto.xhtml">CONTACTO</a></li>
+				    	<li class="li-seleccionado">SOBRE MI</li>
+				    	
+				    	<!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esAdmin()}">
+				    		<li><a href="admin/admin.xhtml">ADMIN</a></li>
+				    	</c:if>
+				    	
+				    	<!-- Solo mostramos si es EMPLEADO o ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esEmpleado()}">
+				    		<li><a href="employee/employee.xhtml">EMPLEADO</a></li>
+				    	</c:if>
+				    	
+				    	<!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    	<c:if test="#{sessionBean.esRegistrado()}">
+				    		<li><a href="user/usuario.xhtml">MI PERFIL</a></li>
+				    	</c:if>
+				    	
+				    	<li></li>
+				    	
+				    	<!-- Si es usuario INVITADO mostramos LOGIN -->
+				    	<c:if test="#{sessionBean.usuario.equals('Invitado')}">
+				    		<li class="login">
+					    		<a href="login.xhtml">
+		    						<i class="fa fa-thin fa-user"></i>
+					    		</a>
+					    	</li>
+				    	</c:if>
+				    	
+				    	<!-- Si es usuario ADMIN O REGISTRADO O EMPLEADO-->
+				    	<c:if test="#{not sessionBean.usuario.equals('Invitado')}">
+				    		<li class="login">
+		    					<h:form>	
+									<p:commandButton icon="fa fa-sign-out" title="Salir" onclick="PF('cierre').show()" 
+										styleClass="hov-exit" style="border-width:0;background:none;box-shadow:none;
+											   width:0.5em;text-shadow:none;"/>
+								</h:form>	
+					    	</li>
+				    	</c:if>
+				    	
+				    	<li class="carrito">
+				    		<a class="" href="pedido.xhtml">
+				    			<i class="fa fa-shopping-cart"></i>
+	    						<span class="carrito-count hover-doble">#{sessionBean.contadorCarrito}</span>
+	    					</a>
+	    				</li>
+			    	</ul>
+			    	<div class="over-hidden">
+			    		<div class="float-left">
+				    		<a href="pedido.xhtml" class="icono sin hover-doble">
+						    	<i class="fa fa-shopping-cart marg-der-3p"></i><span class="carrito-count hover-doble">#{sessionBean.contadorCarrito}</span>
+							</a>
+					    </div>
+					    <div class="navbar-toggle float-right padre">
+					      	<div class="navbar-toggle-icon hijo" style="display: inline-block;"></div>
+					    </div>
+			    	</div>
+			    	
+			  	</div>
+			  	<ul class="navbar-menu-mobile">
+			    	<li><a href="home.xhtml">Home</a></li>
+				    <li><a href="carta.xhtml">Carta</a></li>
+				    <li><a href="contacto.xhtml">Contacto</a></li>
+				    <li class="li-seleccionado">Sobre mi</li>
+				    <!-- Solo mostramos si es ADMIN el usuario de la sesion -->
+				    <c:if test="#{sessionBean.esAdmin()}">
+				   		<li><a href="admin/admin.xhtml">Sección admin</a></li>
+				   	</c:if>
+				   	<!-- Solo mostramos si es EMPLEADO o ADMIN el usuario de la sesion -->
+				    <c:if test="#{sessionBean.esEmpleado()}">
+				    	<li><a href="employee/employee.xhtml">Sección empleado</a></li>
+				    </c:if>
+				   	<!-- Solo mostramos si es usuario registrado -->
+				   	<c:if test="#{sessionBean.esRegistrado()}">
+			    		<li><a href="user/usuario.xhtml">Tu perfil</a></li>
+			    	</c:if>
+			    	<!-- Si es usuario INVITADO mostramos LOGIN -->
+				    <c:if test="#{sessionBean.usuario.equals('Invitado')}">
+					    <li><a href="login.xhtml">Accede a tu cuenta</a></li>
+				    </c:if>
+				    <!-- Si es usuario ADMIN O REGISTRADO -->
+				    <c:if test="#{not sessionBean.usuario.equals('Invitado')}">
+		    			<h:form>
+		    				<p:remoteCommand name="si" action="#{sessionBean.salir(true)}"/>
+				    		<p:remoteCommand name="no" action="#{sessionBean.salir(false)}"/>
+							<p:commandButton title="Cerrar sesión" value="Cerrar sesión" onclick="PF('cierre').show()" style="background:none;" styleClass="hover-button"/>
+						  	<p:confirmDialog styleClass="cierre" appendTo="@(body)" header="Confirmación de cierre" message="¿Estás seguro que deseas cerrar tu sesión?" severity="alert" widgetVar="cierre">
+						     	<p:commandButton value="Si" onclick="PF('cierre').hide(); si()" />
+						     	<p:commandButton value="No" onclick="PF('cierre').hide(); no()" />
+						  	</p:confirmDialog>
+						</h:form>	    	
+				    </c:if>
+			  	</ul>
+			</nav>
+			<br></br>
+			<div class="container-all">
+				<div class="container">
+        		
+	            	<section class="margin-top">
+						<h2 class="centrado bg-prim color-fff width-full margin-bottom-doble">ACERCA DE MÍ</h2>
+						<div class="principal">
+							<div class="izquierda">
+								<div class="imagen-personal">
+									<img src="img/FotoAlvaro.jpg" alt="Álvaro Quijorna - CenjorApps" />
+								</div>
+							</div>
+							
+							<div class="derecha">
+								<div class="texto" id="contenedor">
+									 
+									<p id="texto" class="justificado"></p>
+								
+									<!--	
+									<p id="p4" class="justificado"></p>
+									<p id="p5" class="justificado">Tampoco lo hago para satisfacer mi ego como diseñador. Mis gustos no son relevantes.</p>
+									<p id="p6" class="justificado">Lo que hago es <strong>crear y potenciar la mejor arma de marketing</strong> que existe a profesionales que saben de <strong>la importancia y el valor de una web</strong> en su estrategia de negocio.</p>
+									<p id="p7" class="justificado"></p>						
+									 
+									<p></p>
+									<p>
+										<a href="contacto.xhtml">
+											<span class="fa fa-envelope">
+												<span>¿HABLAMOS?</span>
+											</span>
+										</a>
+									</p>
+									-->
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+    	</div>
+    	
+		<footer class="footer margin-top-doble">
+			<h:panelGroup layout="block">
+		    	<div class="row">
+		      		<div>
+		        		<h4 class="centrado no-margin-bottom padding-top-3">Pizza Car Express - El Cardenal</h4>
+		        		<p class="centrado no-margin-bottom">Calle Ciprés, 6</p>
+		        		<p class="centrado no-margin-bottom">45700 Consuegra</p>
+		        		<p class="centrado no-margin-bottom">Toledo</p>
+		        		<p class="centrado no-margin-bottom">925 47 55 62</p>
+		        		<p class="centrado no-margin-bottom">pizzacarexpress@gmail.com</p>
+		      		</div>
+		    	</div>
+		    	<hr/>
+		    	<div class="row">
+		      		<div>
+		        		<p class="centrado no-margin-bottom">&#169; 2023 PizzaCar Express. Todos los derechos reservados.</p>
+		        		<p class="centrado separado-arriba no-margin-bottom">Síguenos en 
+		        			<a href="https://www.facebook.com/Pizza-Car-Consuegra" target="_blank"><i class="fa fa-facebook footer" aria-hidden="true"></i></a>
+		        			<a href="https://www.instagram.com/pizza_car_consuegra" target="_blank"><i class="fa fa-instagram footer" aria-hidden="true"></i></a>
+		         		</p>
+		         		<p class="centrado separado-arriba no-margin-bottom">Developed by Álvaro Quijorna (CenjorApps)</p>
+		      			<br></br>
+		      		</div>
+		    	</div>
+		  	</h:panelGroup>
+		</footer>
+    </h:body>    
+</html>
