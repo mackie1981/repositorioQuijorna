@@ -61,12 +61,16 @@ public class EmployeeBean implements Serializable {
 	}
 	
 	public void buscarProximoPedido() {
-		try {
-			proximoPedido = pedidoService.findNextPedido();
-			if(null != proximoPedido)
-				hayPedidosSinHacer = true;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(hayPedidosSinHacer)
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aun no has acabado el pedido que tienes", ""));
+		else {
+			try {
+				proximoPedido = pedidoService.findNextPedido();
+				if(null != proximoPedido)
+					hayPedidosSinHacer = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
